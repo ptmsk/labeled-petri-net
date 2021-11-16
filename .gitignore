@@ -1,0 +1,11 @@
+# Folder
+petri-net/
+.vscode/
+
+
+# File
+*.cpp
+*.exe
+a.py
+*.dot
+*.ipynb
