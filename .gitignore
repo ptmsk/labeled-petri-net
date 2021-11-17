@@ -7,5 +7,9 @@ petri-net/
 *.cpp
 *.exe
 a.py
+net_bonus.py
+net2.py
 *.dot
 *.ipynb
+
+__pycache__/
