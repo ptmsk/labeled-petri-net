@@ -4,9 +4,12 @@ petri-net/
 
 
 # File
+*.gv
+*.png
 *.cpp
 *.exe
 a.py
+asm3.py
 net_bonus.py
 net2.py
 *.dot
