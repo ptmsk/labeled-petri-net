@@ -1,4 +1,5 @@
 import net as ptn
+import os
 import graphviz
 
 """ Create specialist petri net """
@@ -66,4 +67,7 @@ if __name__ == "__main__":
         name = str(edge[1][0])
         ts_i.edge(source, dest, name)
 
-    ts_i.render("test-visualize/asm1b/asm1b_i", view=True)  
+    root_folder = os.path.dirname(os.path.abspath(__file__))
+
+    # Visualize the transition system
+    ts_i.render(os.path.join(root_folder, "test-visualize", "asm1b", "asm1b_i"), view=True)

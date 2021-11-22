@@ -1,4 +1,5 @@
 import net as ptn
+import os
 
 """ Create patient petri_net"""
 place_names = ["wait", "inside", "done"]
@@ -29,9 +30,6 @@ if __name__ == "__main__":
 
     # print the mathematical formula for petri net
     p_net.detail_Print()
-
-    # visualize petri net
-    p_net.draw("p_net", "asm2")
-
+    
     # Do something
-    p_net.run_debug("p_net_run", "asm2")
+    p_net.run_debug("p_net", "asm2")

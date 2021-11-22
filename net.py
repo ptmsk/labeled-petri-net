@@ -1,7 +1,8 @@
 """
 A Petri net simple implementation
 """
-
+import os
+import shutil
 import graphviz
 
 class Place:
@@ -168,12 +169,19 @@ class PetriNet:
         
         print("\nEnd firing: [", ", ".join(["{0}.{1}".format(p[1]._holding, p[0]) for p in self._places.items()]), "]", sep="")
 
-    def run_debug(self, name, folder):
+    def run_debug(self, name="run_debug", folder="visualize"):
         """
         Apply firing sequence with debug mode.
         :name: Name of the petri net
         :folder: Folder to store visualization
         """
+        root_folder = os.path.dirname(os.path.abspath(__file__))
+        visual_path = os.path.join(root_folder, "test-visualize")
+        if os.path.exists(visual_path):
+            old_folder_path = os.path.join(visual_path, folder)
+            if os.path.exists(old_folder_path):
+                shutil.rmtree(old_folder_path)
+        self.draw(name, folder)
         map_key = dict(enumerate(self._transitions.keys()))
         print("Initial marking: [", ", ".join(["{0}.{1}".format(p[1]._holding, p[0]) for p in self._places.items()]), "]", sep="")
         if not(any(transition.fireable() for transition in self._transitions.values())):
@@ -183,10 +191,11 @@ class PetriNet:
                              +  ", {} to visualize, -1 to finish firing): ".format(len(self._transitions)))
         i = int(input(choose_transition).strip())
         count = 0
+        name += "_run"
         while i != -1:
             if i == len(self._transitions):
                 if count == 0:
-                    self.draw(name, folder)  
+                    self.draw(name, folder)
                 else:
                     self.draw("_".join([name, str(count)]), folder)
                 count += 1
@@ -330,7 +339,8 @@ class PetriNet:
             for place_name in transition[1]._outarcs:
                 place_with_tokens = place_name + "\n" + str(self._places[place_name]._holding)
                 ptn.edge(transition[0], place_with_tokens, penwidth='3.0')
-        ptn.render("test-visualize/{0}/{1}".format(folder, name), view=True)
+        root_folder = os.path.dirname(os.path.abspath(__file__))
+        ptn.render(os.path.join(root_folder, "test-visualize", folder, name), view=True)
         print("Petri net visualized!...")
 
     def detail_Print(self, nname = "a"):
@@ -403,6 +413,13 @@ class PetriNet:
             enabled = ts[1].fire()
             if enabled:
                 print("(N, M0) [{0}> (N, [{1}])".format(ts[0], ", ".join(["{0}.{1}".format(p[1]._holding, p[0]) for p in self._places.items()])))
+                if check_exist_marking == False:
+                    root_folder = os.path.dirname(os.path.abspath(__file__))
+                    visual_path = os.path.join(root_folder, "test-visualize")
+                    if os.path.exists(visual_path):
+                        old_folder_path = os.path.join(visual_path, "asm4")
+                        if os.path.exists(old_folder_path):
+                            shutil.rmtree(old_folder_path)
                 check_exist_marking = True
                 self.draw("transition_{}".format(ts[0]), "asm4")
                 self.set_markings(initial_marking)

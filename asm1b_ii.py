@@ -1,4 +1,5 @@
 from asm1b_i import s_net
+import os
 import graphviz
 
 if __name__ == '__main__':
@@ -52,4 +53,7 @@ if __name__ == '__main__':
         name = str(edge[1][0])
         ts_ii.edge(source, dest, name, penwidth='3.0')
 
-    ts_ii.render("test-visualize/asm1b/asm1b_ii", view=True)  
+    root_folder = os.path.dirname(os.path.abspath(__file__))
+
+    # Visualize the transition system
+    ts_ii.render(os.path.join(root_folder, "test-visualize", "asm1b", "asm1b_ii"), view=True)  

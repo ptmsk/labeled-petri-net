@@ -1,5 +1,4 @@
 # Folder
-petri-net/
 .vscode/
 __pycache__/
 test-visualize/
@@ -9,9 +8,7 @@ test-visualize/
 *.png
 *.cpp
 *.exe
-a.py
-net_bonus.py
-net2.py
 *.dot
 *.ipynb
 *.pdf
+attempt.py
