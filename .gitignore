@@ -1,7 +1,8 @@
 # Folder
 petri-net/
 .vscode/
-
+__pycache__/
+test-visualize/
 
 # File
 *.gv
@@ -9,10 +10,8 @@ petri-net/
 *.cpp
 *.exe
 a.py
-asm3.py
 net_bonus.py
 net2.py
 *.dot
 *.ipynb
-
-__pycache__/
+*.pdf
