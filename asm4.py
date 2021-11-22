@@ -1,8 +1,9 @@
-import net as ptn
 from asm3 import m_net
 
-# m_net is the superimposed (merged) petri net
-# created by Specialist petri net and Patient petri net
+"""
+Petri net m_net is the superimposed (merged) petri net
+created by Specialist petri net and Patient petri net
+"""
 
 if __name__ == "__main__":
     print("please enter the token in place ", ", ".join(m_net._places.keys()), " respectively: ", sep="")

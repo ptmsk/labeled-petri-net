@@ -330,9 +330,10 @@ class PetriNet:
             for place_name in transition[1]._outarcs:
                 place_with_tokens = place_name + "\n" + str(self._places[place_name]._holding)
                 ptn.edge(transition[0], place_with_tokens, penwidth='3.0')
-        ptn.render("test-visualize/{0}/{1}".format(folder, name), view=True)  
+        ptn.render("test-visualize/{0}/{1}".format(folder, name), view=True)
+        print("Petri net visualized!...")
 
-    def detail_Print(petri_net, nname = "a"):
+    def detail_Print(self, nname = "a"):
         """
         Print the details of a petri net
         :nname: Name of the petri net
@@ -341,17 +342,52 @@ class PetriNet:
         print("This is details of", nname ,"petri net!")
         print("Denote petri net N as quadruple: N = (P, T, F, M0)")
         print("Where:")
-        print("Places P = {", ", ".join(petri_net._places), "}", sep="")
-        print("Transitions T = {", ", ".join(petri_net._transitions), "}", sep="")
+        print("Places P = {", ", ".join(self._places), "}", sep="")
+        print("Transitions T = {", ", ".join(self._transitions), "}", sep="")
         iF = []
         oF = []
-        for ts in petri_net._transitions.items():
+        for ts in self._transitions.items():
             iF.extend("({0}, {1})".format(arc, ts[0]) for arc in ts[1]._inarcs)
             oF.extend("({0}, {1})".format(ts[0], arc) for arc in ts[1]._outarcs)
         print("Flows F = IF X OF = {", ", ".join(iF),"}\n\t\t  X {", ", ".join(oF), "}", sep="")
 
-        print("Initial marking M0 = [", ", ".join("{0}.{1}".format(p[1]._holding, p[0]) for p in petri_net._places.items()), "]", sep="")
+        print("Initial marking M0 = [", ", ".join("{0}.{1}".format(p[1]._holding, p[0]) for p in self._places.items()), "]", sep="")
         print('---------------------------------------------------')
+
+    def __add__ (self, other):
+        """
+        Operator overloading used to merge 2 petri net
+        """
+        if len(self._transitions) == 0:
+            return other
+        elif len(other._transitions) == 0:
+            return self
+        m_places = self._places
+        m_transitions = self._transitions
+
+        for ts in other._transitions:
+            appear = False
+            if ts in m_transitions.keys():
+                appear = True
+            else:
+                m_transitions[ts] = other._transitions[ts]
+            for inplace in other._transitions[ts]._inarcs:
+                if inplace in m_places.keys():
+                    other._transitions[ts]._inarcs[inplace] = InArc(m_places[inplace])
+                else:
+                    m_places[inplace] = other._transitions[ts]._inarcs[inplace]._place
+            for outplace in other._transitions[ts]._outarcs:
+                if outplace in m_places.keys():
+                    other._transitions[ts]._outarcs[outplace] = OutArc(m_places[outplace])
+                else:
+                    m_places[outplace] = other._transitions[ts]._outarcs[outplace]._place
+            if appear:
+                m_transitions[ts]._inarcs.update(other._transitions[ts]._inarcs)
+                m_transitions[ts]._outarcs.update(other._transitions[ts]._outarcs)
+        
+        # construct new petri net
+        m_net = PetriNet(m_transitions, m_places)
+        return m_net
 
     def result_firing_one(self):
         """
