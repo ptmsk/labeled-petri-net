@@ -407,19 +407,19 @@ class PetriNet:
             print ("Empty petri net!")
             return
         print("Initial marking M0: [", ", ".join(["{0}.{1}".format(p[1]._holding, p[0]) for p in self._places.items()]), "]", sep="")
+        root_folder = os.path.dirname(os.path.abspath(__file__))
+        visual_path = os.path.join(root_folder, "test-visualize")
+        if os.path.exists(visual_path):
+            old_folder_path = os.path.join(visual_path, "asm4")
+            if os.path.exists(old_folder_path):
+                shutil.rmtree(old_folder_path)
+        self.draw("initial_marking", "asm4")
         initial_marking = [place._holding for place in self._places.values()]
         check_exist_marking = False
         for ts in self._transitions.items():
             enabled = ts[1].fire()
             if enabled:
                 print("(N, M0) [{0}> (N, [{1}])".format(ts[0], ", ".join(["{0}.{1}".format(p[1]._holding, p[0]) for p in self._places.items()])))
-                if check_exist_marking == False:
-                    root_folder = os.path.dirname(os.path.abspath(__file__))
-                    visual_path = os.path.join(root_folder, "test-visualize")
-                    if os.path.exists(visual_path):
-                        old_folder_path = os.path.join(visual_path, "asm4")
-                        if os.path.exists(old_folder_path):
-                            shutil.rmtree(old_folder_path)
                 check_exist_marking = True
                 self.draw("transition_{}".format(ts[0]), "asm4")
                 self.set_markings(initial_marking)
