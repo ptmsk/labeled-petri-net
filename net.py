@@ -171,7 +171,7 @@ class PetriNet:
 
     def run_debug(self, name="run_debug", folder="visualize"):
         """
-        Apply firing sequence with debug mode.
+        Apply firing sequence with debug mode and visualize option.
         :name: Name of the petri net
         :folder: Folder to store visualization
         """
@@ -209,6 +209,10 @@ class PetriNet:
                 print("'{}' is not enabled...".format(key))
             if not(any(transition.fireable() for transition in self._transitions.values())):
                 print("No more enabled transitions! Stop firing.")
+                v = input("Press 1 to visualize the final transition, else press 0: ")
+                if v == "1":
+                    name = name[:-3] + "final"
+                    self.draw(name, folder)
                 break
             i = int(input(choose_transition).strip())
 

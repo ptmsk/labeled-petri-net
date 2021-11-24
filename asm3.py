@@ -9,13 +9,12 @@ if __name__ == "__main__":
     valid = False
     while not valid:
         valid = True
-        print("Please press '0' for setting default initial marking and '1' for manually setting initial marking")
-        choice = int(input().strip())
-        if choice == 1:
+        choice = input("Please press '0' for setting default initial marking and '1' for manually setting initial marking: ")
+        if choice == '1':
             print("please enter the number of tokens in places:", ", ".join([p for p in m_net._places]) , "respectively")
             print("Where max token of some places: [", ", ".join(["{0}.{1}".format(p[1]._max_token, p[0]) for p in m_net._places.items() if p[1]._max_token != -1]),"]")    
             m0 = [int(input().strip()) for _ in range(len(m_net._places))]
-        elif choice == 0:
+        elif choice == '0':
             m0 = [1, 0, 0, 4, 0, 1]
         else:
             print("Invalid Input!")
