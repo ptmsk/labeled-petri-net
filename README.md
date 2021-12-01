@@ -1,6 +1,8 @@
 # Labeled-petri-net
 This is the implementation of petri net for our assignment.
 
+Visit [here](https://github.com/ptmsk/labeled-petri-net) to get our code in github.
+
 This assignment is separated into 6 files:
 - **net.py** contains all neccessary implementation classes to visualize the simple petri net.
 - **asm1b_i.py** constructs the Specialist petri net ```s_net``` and visualize desired transition system.
